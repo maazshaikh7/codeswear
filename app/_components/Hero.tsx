@@ -3,12 +3,12 @@ import Image from "next/image";
 
 const Hero = () => {
   return (
-    <div>
+    <div className="pt-14 flex justify-center">
       <Image
         src={"/background.jpg"}
         alt="Background Image"
-        width={2000}
-        height={2000}
+        width={1500}
+        height={1}
       />
     </div>
   );

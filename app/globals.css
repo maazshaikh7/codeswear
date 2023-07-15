@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
-li {
-  @apply hover:text-pink-600;
+button {
+  @apply text-pink-600 hover:scale-105;
+}
+button:disabled {
+  @apply text-gray-500;
 }
 @tailwind utilities;

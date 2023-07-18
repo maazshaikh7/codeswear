@@ -1,8 +1,9 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { log } from "console";
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
+import CartContext, { CartContextProps } from "@/app/_context/CartContext";
 
 interface PageProps {
   params: {
@@ -11,6 +12,8 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
+  const { addToCart } = useContext(CartContext) as CartContextProps;
+
   const [pin, setPin] = useState<null | string>();
   const [service, setService] = useState<null | Boolean>(null);
   const checkServiceAvailability = async () => {
@@ -27,6 +30,10 @@ const Page: React.FC<PageProps> = ({ params }) => {
     } catch (error) {
       console.error("Error occurred while fetching pin codes:", error);
     }
+  };
+
+  const addToCartHandler = () => {
+    addToCart("1234", 2, 500, "tshirt", "S", "red");
   };
 
   return (
@@ -200,7 +207,10 @@ const Page: React.FC<PageProps> = ({ params }) => {
                     </svg>
                   </button>
                 </span>
-                <button className=" text-white bg-neutral-800 border-0 py-2 px-3 focus:outline-none hover:bg-neutral-900 rounded-full">
+                <button
+                  onClick={addToCartHandler}
+                  className=" text-white bg-neutral-800 border-0 py-2 px-3 focus:outline-none hover:bg-neutral-900 rounded-full"
+                >
                   Add to Cart
                 </button>
                 <button className=" text-white w-full bg-pink-500 border-0 py-2 px-3 focus:outline-none hover:bg-pink-600 rounded-full">

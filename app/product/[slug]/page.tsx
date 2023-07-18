@@ -4,6 +4,7 @@ import { log } from "console";
 import React, { useContext } from "react";
 import { useState } from "react";
 import CartContext, { CartContextProps } from "@/app/_context/CartContext";
+import { useRouter } from "next/navigation";
 
 interface PageProps {
   params: {
@@ -12,8 +13,8 @@ interface PageProps {
 }
 
 const Page: React.FC<PageProps> = ({ params }) => {
+  const router = useRouter();
   const { addToCart } = useContext(CartContext) as CartContextProps;
-
   const [pin, setPin] = useState<null | string>();
   const [service, setService] = useState<null | Boolean>(null);
   const checkServiceAvailability = async () => {
@@ -33,7 +34,12 @@ const Page: React.FC<PageProps> = ({ params }) => {
   };
 
   const addToCartHandler = () => {
-    addToCart("1234", 2, 500, "tshirt", "S", "red");
+    addToCart("12345", 1, 500, "T-SHIRT", "S", "RED");
+  };
+
+  const buyNowHandler = () => {
+    addToCart("12345", 1, 500, "T-SHIRT", "S", "RED");
+    router.push("/checkout");
   };
 
   return (
@@ -193,7 +199,7 @@ const Page: React.FC<PageProps> = ({ params }) => {
               </div>
               <div className="flex flex-col space-y-2">
                 <span className="title-font font-medium text-2xl text-gray-900 mb-10">
-                  $58.00
+                  ₹58.00
                   <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                     <svg
                       fill="currentColor"
@@ -213,7 +219,10 @@ const Page: React.FC<PageProps> = ({ params }) => {
                 >
                   Add to Cart
                 </button>
-                <button className=" text-white w-full bg-pink-500 border-0 py-2 px-3 focus:outline-none hover:bg-pink-600 rounded-full">
+                <button
+                  onClick={buyNowHandler}
+                  className=" text-white w-full bg-pink-500 border-0 py-2 px-3 focus:outline-none hover:bg-pink-600 rounded-full"
+                >
                   Buy Now
                 </button>
               </div>

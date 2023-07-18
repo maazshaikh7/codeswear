@@ -1,5 +1,4 @@
 "use client";
-
 import { createContext, useState, useEffect } from "react";
 
 type CartItem = {
@@ -24,14 +23,9 @@ export type CartContextProps = {
     size: "S" | "M" | "L" | "XL",
     variant: string
   ) => void;
-  removeFromCart: (
-    itemCode: string,
-    qty: number,
-    price: number,
-    name: string,
-    size: "S" | "M" | "L" | "XL",
-    variant: string
-  ) => void;
+
+  removeFromCart: (itemCode: string, qty: number) => void;
+
   clearCart: () => void;
   subTotal: number;
 };
@@ -53,19 +47,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
+  // Calculate subtotal whenever cart changes
+
   useEffect(() => {
-    // Calculate subtotal whenever cart changes
     const calculateSubTotal = () => {
       let total = 0;
       Object.values(cart).forEach((item) => {
         total += item.qty * item.price;
       });
       setSubTotal(total);
-      console.log(subTotal);
     };
-
     calculateSubTotal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cart]);
 
   const addToCart = (
@@ -85,11 +77,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     setCart(newCart);
+    console.log("ran");
+
     localStorage.setItem("cart", JSON.stringify(newCart));
   };
 
   const removeFromCart = (itemCode: string, qty: number) => {
-    let newCart = { ...cart };
+    const newCart = { ...cart };
 
     if (itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty - qty;

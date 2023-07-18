@@ -3,10 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { useState } from "react";
-import { BiCart, BiMenuAltLeft, BiX } from "react-icons/bi";
+import { BiArrowBack, BiCart, BiMenuAltLeft, BiX } from "react-icons/bi";
 import ShoppingCart from "./ShoppingCart";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const [hidden, setHidden] = useState(false);
   const ToggleClass = () => {
     setHidden(!hidden);
@@ -50,18 +53,36 @@ const Navbar = () => {
           Login
         </button>
       </div>
-      <button className="absolute top-3 right-4  text-3xl" onClick={ToggleCart}>
-        <BiCart />
-      </button>
+
+      {(pathname === "/checkout" && (
+        <button
+          className="absolute top-4 right-4  text-3xl "
+          onClick={router.back}
+        >
+          <BiArrowBack />
+        </button>
+      )) ||
+        (!(pathname === "/checkout") && (
+          <button
+            className="absolute top-3 right-4  text-3xl "
+            onClick={ToggleCart}
+          >
+            <BiCart />
+          </button>
+        ))}
+
       <div className="hamburger absolute top-3 left-4 md:hidden">
         <button onClick={ToggleClass} className="text-3xl ">
           <BiMenuAltLeft />
         </button>
       </div>
-      <ShoppingCart display={isCartDisplayed} />
+      {!(pathname == "/checkout") && (
+        <ShoppingCart display={isCartDisplayed} checkoutPage={false} />
+      )}
+
       <button
         className={`text-3xl z-10 absolute top-3 right-4 ${
-          isCartDisplayed ? "" : "hidden"
+          !isCartDisplayed || pathname == "/checkout" ? "hidden" : ""
         }`}
         onClick={ToggleCart}
       >

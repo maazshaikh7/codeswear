@@ -1,5 +1,5 @@
 import React from "react";
-import ShoppingCart from "../_components/ShoppingCart";
+import ShoppingCart from "@/app/_components/ShoppingCart";
 
 const Checkout = () => {
   return (
@@ -315,7 +315,9 @@ const Checkout = () => {
           </button>
         </div>
       </form>
-      <ShoppingCart display={true} checkoutPage={true} />
+      <div className="mb-24">
+        <ShoppingCart display={true} checkoutPage={true} />
+      </div>
     </>
   );
 };

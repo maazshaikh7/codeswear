@@ -19,8 +19,12 @@ const CartItem: React.FC<cartItemProps> = ({ checkoutPage }) => {
 
   return (
     <>
-      <li className="py-5 px-3">
-        <div className={`flex justify-between ${checkoutPage ? "mx-10" : ""}`}>
+      <li className="py-5 sm:px-3">
+        <div
+          className={`flex justify-between p-1 ${
+            checkoutPage ? "md:mx-10 " : ""
+          }`}
+        >
           <Image
             className="rounded-sm shadow-md"
             src="/background.jpg"

@@ -1,10 +1,10 @@
 import React from "react";
-import Merchandise from "../_components/Merchandise";
+import Merchandise from "@/app/_components/Merchandise";
 
 const page = () => {
   return (
     <div>
-      <Merchandise type="SWEATSHIRT" quantity={10} />
+      <Merchandise type="TSHIRT" quantity={2} />
     </div>
   );
 };

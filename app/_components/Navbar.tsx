@@ -1,20 +1,28 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { BiArrowBack, BiCart, BiMenuAltLeft, BiX } from "react-icons/bi";
 import ShoppingCart from "./ShoppingCart";
 import { usePathname, useRouter } from "next/navigation";
+import CartContext, { CartContextProps } from "../_context/CartContext";
 
 const Navbar = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const { cart } = useContext(CartContext) as CartContextProps;
   const [hidden, setHidden] = useState(false);
   const ToggleClass = () => {
     setHidden(!hidden);
   };
   const [isCartDisplayed, setIsCartDisplayed] = useState(false);
+  useEffect(() => {
+    if (Object.keys(cart).length === 0) {
+      setIsCartDisplayed(false);
+    }
+  }, [cart]);
+
   const ToggleCart = () => {
     setIsCartDisplayed(!isCartDisplayed);
   };
@@ -49,8 +57,11 @@ const Navbar = () => {
         </Link>
       </ul>
       <div className={`md:w-32 ${hidden ? "hidden md:block" : ""}`}>
-        <button className="bg-pink-600 text-white px-3 rounded-full ">
-          Login
+        <button
+          onClick={() => router.push("/signup")}
+          className="bg-pink-600 text-white px-3 rounded-full "
+        >
+          Sign up
         </button>
       </div>
 

@@ -9,17 +9,6 @@ export async function POST(req: Request) {
 
     const data = await req.json();
 
-    const {
-      productCategory,
-      productDescription,
-      productFeatured,
-      productImage,
-      productName,
-      productPrice,
-      productQuantity,
-      productSlug,
-    } = data;
-
     const saveData = await Product.create(data);
 
     if (saveData) {

@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { log } from "console";
+
 import React, { useContext } from "react";
 import { useState } from "react";
 import CartContext, { CartContextProps } from "@/app/_context/CartContext";

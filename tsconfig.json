@@ -23,6 +23,6 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_components/Footer.jsx", "app/_context/CartContext.tsx", "app/models/Product.js", "app/middleware.js", "app/models/User.js", "app/models/Order.js", "app/api/getproducts/route.ts", "app/api/addproducts/route.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/_components/Footer.jsx", "app/_context/CartContext.tsx", "app/models/Product.js", "app/middleware.js", "app/models/User.js", "app/models/Order.js", "app/api/getproducts/route.ts", "app/api/addproducts/route.ts"],
   "exclude": ["node_modules"]
 }

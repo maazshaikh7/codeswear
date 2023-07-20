@@ -3,8 +3,8 @@ import Product from "@/app/models/Product";
 import connectDb from "@/app/middleware";
 
 export const GET = async () => {
-  await connectDb();
   try {
+    await connectDb();
     const products = await Product.find();
     return NextResponse.json(products);
   } catch (err) {

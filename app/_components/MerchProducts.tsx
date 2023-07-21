@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 
 type MerchProductsProps = {
-  _id: string;
+  key: string;
   category: string;
   title: string;
   size: string;
@@ -13,7 +13,7 @@ type MerchProductsProps = {
 };
 
 const MerchProducts: React.FC<MerchProductsProps> = ({
-  _id,
+  key,
   title,
   size,
   color,
@@ -22,7 +22,7 @@ const MerchProducts: React.FC<MerchProductsProps> = ({
   category,
 }) => {
   return (
-    <Link href={`/product/${_id}`}>
+    <Link href={`/product/${key}`}>
       <div className="p-2 w-full shadow-md">
         <span className="block relative h-80 w-56 mx-auto rounded overflow-hidden">
           <img
@@ -33,7 +33,7 @@ const MerchProducts: React.FC<MerchProductsProps> = ({
         </span>
         <div className="mt-4 text-center">
           <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
-            {category}
+            {category.toUpperCase()}
           </h3>
           <h2 className="text-gray-900 title-font text-lg font-medium">
             {title}

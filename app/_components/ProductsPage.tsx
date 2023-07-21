@@ -2,8 +2,27 @@
 import React, { useEffect, useState } from "react";
 import MerchProducts from "@/app/_components/MerchProducts";
 
-const Layout = () => {
-  const [merchandiseData, setMerchandiseData] = useState([]);
+type VariantData = {
+  size: string;
+  color: string;
+  price: number;
+  qtyInStock: number;
+  _id: string;
+};
+
+type ProductData = {
+  _id: string;
+  title: string;
+  category: string;
+  variants: VariantData[];
+};
+
+type ProductsPageProps = {
+  category: string;
+};
+
+const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
+  const [merchandiseData, setMerchandiseData] = useState<ProductData[]>([]);
 
   useEffect(() => {
     // Fetch merchandise data from the API
@@ -13,21 +32,23 @@ const Layout = () => {
       .catch((error) =>
         console.error("Error fetching merchandise data:", error)
       );
-    console.log(merchandiseData);
-  }, [merchandiseData]);
+  }, []); // Remove merchandiseData from the dependency array
 
   // Filter the merchandise data based on the provided category
-  let category = "Product Category";
   const filteredData = merchandiseData.filter(
-    (item) => item.category == category
+    (item) => item.category === category
   );
 
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
+        <h2 className="text-center text-3xl font-semibold my-10">
+          BEST SELLING {category.toUpperCase()}S ON CODESWEAR
+        </h2>
+        <hr className="mb-10" />
         <div className="flex flex-wrap -m-4 gap-6 gap-x-10 justify-center">
-          {filteredData.map((item) =>
-            item.variants.map((variant) => (
+          {filteredData.map((item: ProductData) =>
+            item.variants.map((variant: VariantData) => (
               <MerchProducts
                 key={variant._id}
                 title={item.title}
@@ -45,4 +66,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default ProductsPage;

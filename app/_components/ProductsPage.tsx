@@ -12,6 +12,7 @@ type VariantData = {
 
 type ProductData = {
   _id: string;
+  slug: string;
   title: string;
   category: string;
   variants: VariantData[];
@@ -25,14 +26,12 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
   const [merchandiseData, setMerchandiseData] = useState<ProductData[]>([]);
 
   useEffect(() => {
-    // Fetch merchandise data from the API
+    // Fetch products data from the API
     fetch("http://localhost:3000/api/getproducts")
       .then((response) => response.json())
       .then((data) => setMerchandiseData(data))
-      .catch((error) =>
-        console.error("Error fetching merchandise data:", error)
-      );
-  }, []); // Remove merchandiseData from the dependency array
+      .catch((error) => console.error("Error fetching products data:", error));
+  }, []);
 
   // Filter the merchandise data based on the provided category
   const filteredData = merchandiseData.filter(
@@ -50,6 +49,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
           {filteredData.map((item: ProductData) => (
             <MerchProducts
               key={item._id}
+              slug={item.slug}
               title={item.title}
               category={item.category}
               variants={item.variants}

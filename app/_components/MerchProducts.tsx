@@ -13,17 +13,19 @@ type VariantData = {
 
 type MerchProductsProps = {
   title: string;
+  slug: string;
   category: string;
   variants: VariantData[];
 };
 
 const MerchProducts: React.FC<MerchProductsProps> = ({
   title,
+  slug,
   category,
   variants,
 }) => {
   return (
-    <Link href={`/product/${variants[0]._id}`}>
+    <Link href={`/product/${slug}`}>
       {" "}
       {/* Use the first variant's ID for the link */}
       <div className="p-2 w-full shadow-md">

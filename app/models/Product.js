@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const VariantSchema = new mongoose.Schema({
-  size: { type: String, required: true },
+  size: { type: String },
   color: { type: String, required: true },
   price: { type: Number, required: true },
   qtyInStock: { type: Number, required: true },

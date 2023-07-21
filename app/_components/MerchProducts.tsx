@@ -1,28 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
+// MerchProducts.tsx
 import React from "react";
+import Link from "next/link";
 
-type MerchProductsProps = {
-  key: string;
-  category: string;
-  title: string;
+type VariantData = {
   size: string;
   color: string;
   price: number;
   qtyInStock: number;
+  _id: string;
+};
+
+type MerchProductsProps = {
+  title: string;
+  category: string;
+  variants: VariantData[];
 };
 
 const MerchProducts: React.FC<MerchProductsProps> = ({
-  key,
   title,
-  size,
-  color,
-  price,
-  qtyInStock,
   category,
+  variants,
 }) => {
   return (
-    <Link href={`/product/${key}`}>
+    <Link href={`/product/${variants[0]._id}`}>
+      {" "}
+      {/* Use the first variant's ID for the link */}
       <div className="p-2 w-full shadow-md">
         <span className="block relative h-80 w-56 mx-auto rounded overflow-hidden">
           <img
@@ -32,18 +35,35 @@ const MerchProducts: React.FC<MerchProductsProps> = ({
           />
         </span>
         <div className="mt-4 text-center">
-          <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
+          <h3 className="text-gray-500 text-xs  tracking-widest title-font mb-1">
             {category.toUpperCase()}
           </h3>
           <h2 className="text-gray-900 title-font text-lg font-medium">
             {title}
-            <p className="text-sm">
-              {size} - {color}
-            </p>
           </h2>
-          <p className="mt-1">₹{price.toFixed(2)}</p>
-          <p className="text-sm text-green-600">
-            {qtyInStock > 0 ? "In Stock" : "Out of Stock"}
+          <p className="mt-1">₹{variants[0].price.toFixed(2)}</p>
+          <hr className="my-2" />
+          {variants.length > 0 && (
+            <p>
+              Size:
+              {variants.map((variant) => (
+                <li
+                  key={variant._id}
+                  className="inline bg-pink-200  px-2 m-1 rounded-full"
+                >
+                  {variant.size}
+                </li>
+              ))}
+            </p>
+          )}
+
+          {/* Display the price of the first variant */}
+          <p className="text-sm text-gray-600">
+            {variants.some(
+              (variant) => variant.qtyInStock > 0
+            ) /* Check if any variant is in stock */
+              ? ""
+              : "Out of Stock"}
           </p>
         </div>
       </div>

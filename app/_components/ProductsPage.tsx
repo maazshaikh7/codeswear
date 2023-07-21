@@ -47,19 +47,14 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
         </h2>
         <hr className="mb-10" />
         <div className="flex flex-wrap -m-4 gap-6 gap-x-10 justify-center">
-          {filteredData.map((item: ProductData) =>
-            item.variants.map((variant: VariantData) => (
-              <MerchProducts
-                key={variant._id}
-                title={item.title}
-                category={item.category}
-                size={variant.size}
-                color={variant.color}
-                price={variant.price}
-                qtyInStock={variant.qtyInStock}
-              />
-            ))
-          )}
+          {filteredData.map((item: ProductData) => (
+            <MerchProducts
+              key={item._id}
+              title={item.title}
+              category={item.category}
+              variants={item.variants}
+            />
+          ))}
         </div>
       </div>
     </section>

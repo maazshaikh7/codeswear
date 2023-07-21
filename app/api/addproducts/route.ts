@@ -6,9 +6,7 @@ import { NextApiRequest } from "next";
 export async function POST(req: Request) {
   try {
     await connectDb();
-
     const data = await req.json();
-
     const saveData = await Product.create(data);
 
     if (saveData) {

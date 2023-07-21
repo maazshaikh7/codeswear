@@ -1,7 +1,7 @@
 import ProductsPage from "@/app/_components/ProductsPage";
 
 const page = () => {
-  return <ProductsPage category="Product Category" />;
+  return <ProductsPage category="sweatshirt" />;
 };
 
 export default page;

@@ -6,15 +6,24 @@ export const GET = async () => {
   try {
     await connectDb();
     const products = await Product.find();
-    // Filter out variants with qtyInStock equal to 0
-    products.forEach((product: any) => {
-      if (product.variants && Array.isArray(product.variants)) {
-        product.variants = product.variants.filter(
-          (variant: any) => variant.qtyInStock > 0
+
+    // Filter out products that have no color variants or all variants with qtyInStock equal to 0
+    const filteredProducts = products.filter((product: any) => {
+      if (
+        product.colorVariants &&
+        Array.isArray(product.colorVariants) &&
+        product.colorVariants.length > 0
+      ) {
+        // Filter out variants with qtyInStock equal to 0
+        product.colorVariants = product.colorVariants.filter((variant: any) =>
+          variant.sizes.some((size: any) => size.qtyInStock > 0)
         );
+        return product.colorVariants.length > 0;
       }
+      return false;
     });
-    return NextResponse.json(products);
+
+    return NextResponse.json(filteredProducts);
   } catch (err) {
     console.error(err);
     return new NextResponse("hello", { status: 500 });

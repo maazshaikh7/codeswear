@@ -1,10 +1,16 @@
 const mongoose = require("mongoose");
-const VariantSchema = new mongoose.Schema({
-  size: { type: String },
-  color: { type: String, required: true },
+
+const SizeSchema = new mongoose.Schema({
+  size: { type: String, required: true },
   price: { type: Number, required: true },
   qtyInStock: { type: Number, required: true },
 });
+
+const ColorVariantSchema = new mongoose.Schema({
+  color: { type: String, required: true },
+  sizes: [SizeSchema],
+});
+
 const ProductSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
@@ -12,9 +18,10 @@ const ProductSchema = new mongoose.Schema(
     description: { type: String, required: true },
     img: { type: String, required: true },
     category: { type: String, required: true },
-    variants: [VariantSchema],
+    colorVariants: [ColorVariantSchema],
   },
   { timestamps: true }
 );
+
 mongoose.models = {};
 export default mongoose.model("Product", ProductSchema);

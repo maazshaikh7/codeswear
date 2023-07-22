@@ -14,6 +14,7 @@ export async function PUT(req: Request) {
       quantity,
       price,
       category,
+      img,
       variants,
     } = data;
 
@@ -26,6 +27,7 @@ export async function PUT(req: Request) {
         price: price,
         quantity: quantity,
         category: category,
+        img: img,
         variants: variants,
       }
     );

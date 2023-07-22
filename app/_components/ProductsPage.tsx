@@ -1,21 +1,20 @@
 "use client";
+// ProductsPage.tsx
 import React, { useEffect, useState } from "react";
-import MerchProducts from "@/app/_components/MerchProducts";
+import MerchProducts, {
+  ColorVariantData,
+  SizeData,
+} from "@/app/_components/MerchProducts";
 
-type VariantData = {
-  size: string;
-  color: string;
-  price: number;
-  qtyInStock: number;
-  _id: string;
-};
-
-type ProductData = {
+export type ProductData = {
+  variants: any;
+  img: string | undefined;
+  description: string;
   _id: string;
   slug: string;
   title: string;
   category: string;
-  variants: VariantData[];
+  colorVariants: ColorVariantData[];
 };
 
 type ProductsPageProps = {
@@ -52,7 +51,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
               slug={item.slug}
               title={item.title}
               category={item.category}
-              variants={item.variants}
+              colorVariants={item.colorVariants}
             />
           ))}
         </div>

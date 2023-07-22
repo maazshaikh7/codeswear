@@ -5,7 +5,7 @@ type CartItem = {
   qty: number;
   price: number;
   name: string;
-  size: "S" | "M" | "L" | "XL";
+  size: string;
   variant: string;
 };
 
@@ -20,7 +20,7 @@ export type CartContextProps = {
     qty: number,
     price: number,
     name: string,
-    size: "S" | "M" | "L" | "XL",
+    size: string,
     variant: string
   ) => void;
 
@@ -65,7 +65,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     qty: number,
     price: number,
     name: string,
-    size: "S" | "M" | "L" | "XL",
+    size: string,
     variant: string
   ) => {
     let newCart = { ...cart };

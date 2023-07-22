@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import Product from "@/app/models/Product";
 import connectDb from "@/app/middleware";
-import { NextApiRequest } from "next";
 
 export async function POST(req: Request) {
   try {

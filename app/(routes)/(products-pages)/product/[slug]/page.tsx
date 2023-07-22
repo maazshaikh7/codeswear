@@ -1,52 +1,56 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
+import React, { useContext, useEffect, useState } from "react";
+//TODO auto select color according to slug
 
-import React, { useContext } from "react";
-import { useState, useEffect } from "react";
-import CartContext, { CartContextProps } from "@/app/_context/CartContext";
 import { useRouter } from "next/navigation";
+import CartContext, { CartContextProps } from "@/app/_context/CartContext";
+import { ColorVariantData } from "@/app/_components/MerchProducts";
+import { ProductData } from "@/app/_components/ProductsPage";
 
-interface PageProps {
-  params: {
-    slug: string;
-  };
-}
-type VariantData = {
-  size: string;
-  color: string;
-  price: number;
-  qtyInStock: number;
-  _id: string;
-};
-
-type ProductData = {
-  _id: string;
-  slug: string;
-  title: string;
-  img: string;
-  description: string;
-  category: string;
-  variants: VariantData[];
-};
-
-const Page: React.FC<PageProps> = ({ params }) => {
+const ProductPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
   const { addToCart } = useContext(CartContext) as CartContextProps;
   const [pin, setPin] = useState<null | string>();
-  const [service, setService] = useState<null | Boolean>(null);
-  const [productData, setProductData] = useState<ProductData[]>([]);
-  const [lastSelectedColor, setLastSelectedColor] = useState("");
+  const [service, setService] = useState<null | boolean>(null);
+  const [productData, setProductData] = useState<ProductData | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
-  const handleButtonClick = (color: string) => {
-    addToCart("12345", 1, 500, "T-SHIRT", "S", color);
-    setLastSelectedColor(color);
+  const handleAddToCart = () => {
+    if (productData && selectedColor && selectedSize) {
+      const variant = productData.colorVariants.find(
+        (v: ColorVariantData) =>
+          v.color === selectedColor &&
+          v.sizes.some((s) => s.size === selectedSize)
+      );
+      if (variant) {
+        const selectedSizeData = variant.sizes.find(
+          (s) => s.size === selectedSize
+        );
+        if (selectedSizeData) {
+          addToCart(
+            productData._id,
+            1,
+            selectedSizeData.price,
+            productData.category,
+            selectedSizeData.size,
+            variant.color
+          );
+        }
+      }
+    }
   };
 
-  const checkServiceAvailability = async () => {
+  const handleBuyNow = () => {
+    handleAddToCart();
+    router.push("/checkout");
+  };
+
+  const handleCheckServiceAvailability = async () => {
     try {
       const pinsResponse = await fetch("http://localhost:3000/api/pincode");
       const pinsJson = await pinsResponse.json();
-      console.log(pinsJson, pinsResponse);
 
       if (pinsJson.includes(pin ? parseInt(pin) : "")) {
         setService(true);
@@ -62,267 +66,180 @@ const Page: React.FC<PageProps> = ({ params }) => {
     // Fetch products data from the API
     fetch("http://localhost:3000/api/getproducts")
       .then((response) => response.json())
-      .then((data) => setProductData(data))
+      .then((data) => {
+        // Find the product data with the matching slug
+        const foundProduct = data.find(
+          (item: ProductData) => item.slug === params.slug
+        );
+        if (foundProduct) {
+          setProductData(foundProduct);
+        }
+      })
       .catch((error) => console.error("Error fetching products data:", error));
-  }, []);
+  }, [params.slug]);
 
-  // Filter the product data based on the provided category
-  const filteredData = productData.filter((item) => item.slug === params.slug);
-  console.log("Filtered data", filteredData);
-
-  const addToCartHandler = () => {
-    addToCart("12345", 1, 500, "T-SHIRT", "S", "RED");
-  };
-
-  const buyNowHandler = () => {
-    addToCart("12345", 1, 500, "T-SHIRT", "S", "RED");
-    router.push("/checkout");
-  };
+  if (!productData) {
+    // Show loading or error message if the product data is not yet fetched
+    return <div>Hello</div>;
+  }
+  console.log(productData);
 
   return (
-    <>
-      <section className="text-gray-600 body-font overflow-hidden">
-        <div className="container px-5 py-24 mx-auto">
-          <div className="lg:w-4/5 mx-auto flex flex-wrap">
-            <img
-              alt="ecommerce"
-              className="lg:w-1/2 w-full pt-12 lg:h-96 h-64 object-cover object-center rounded"
-              src="https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-            />
-            <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-              <h2 className="text-sm title-font text-gray-500 tracking-widest">
-                {filteredData.map((item: ProductData) =>
-                  item.category.toUpperCase()
+    <section className="text-gray-600 body-font overflow-hidden">
+      <div className="container px-5 py-24 mx-auto">
+        <div className="lg:w-4/5 mx-auto flex flex-wrap">
+          <img
+            alt={productData.title + " image"}
+            className="lg:w-1/2 w-full pt-12 lg:h-96 object-contain rounded"
+            src={productData.img}
+          />
+          <div className="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+            <h2 className="text-sm title-font text-gray-500 tracking-widest">
+              {productData.category.toUpperCase()}
+            </h2>
+            <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
+              {productData.title}
+            </h1>
+            <div className="flex mb-4">
+              <span className="flex items-center">
+                <svg
+                  fill="currentColor"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="w-4 h-4 text-pink-500"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <span className="text-gray-600 ml-3">4 Reviews</span>
+              </span>
+            </div>
+            <p className="leading-relaxed">{productData.description}</p>
+            <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
+              <div className="flex">
+                <span className="mr-3">Color</span>
+                {productData.colorVariants.map(
+                  (colorVariant: ColorVariantData) => (
+                    <button
+                      key={colorVariant.color}
+                      style={{
+                        backgroundColor: colorVariant.color,
+                        border: "2px solid #D1D5DB",
+                        marginLeft: "0.25rem",
+                        borderRadius: "9999px",
+                        width: "1.5rem",
+                        height: "1.5rem",
+                        outline: "none",
+                        boxShadow:
+                          selectedColor === colorVariant.color
+                            ? "0 0 0 2px gray"
+                            : "none",
+                      }}
+                      onClick={() => setSelectedColor(colorVariant.color)}
+                    ></button>
+                  )
                 )}
-              </h2>
-              <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">
-                {filteredData.map((item: ProductData) => item.title)}
-              </h1>
-              <div className="flex mb-4">
-                <span className="flex items-center">
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 text-pink-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 text-pink-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 text-pink-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <svg
-                    fill="currentColor"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 text-pink-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <svg
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    className="w-4 h-4 text-pink-500"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
-                  </svg>
-                  <span className="text-gray-600 ml-3">4 Reviews</span>
-                </span>
-                <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200 space-x-2s">
-                  <a className="text-gray-500">
-                    <svg
-                      fill="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
-                    </svg>
-                  </a>
-                  <a className="text-gray-500">
-                    <svg
-                      fill="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
-                    </svg>
-                  </a>
-                  <a className="text-gray-500">
-                    <svg
-                      fill="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="w-5 h-5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
-                    </svg>
-                  </a>
-                </span>
               </div>
-              <p className="leading-relaxed">
-                {filteredData.map((item: ProductData) => item.description)}
-              </p>
-              <div className="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
-                <div className="flex">
-                  <span className="mr-3">Color</span>
-                  {filteredData.map((item: ProductData) =>
-                    item.variants.map(
-                      (variant: VariantData) =>
-                        variant.color && (
-                          <button
-                            key={variant._id}
-                            style={{
-                              backgroundColor: variant.color,
-                              border: "2px solid #D1D5DB",
-                              marginLeft: "0.25rem",
-                              borderRadius: "9999px",
-                              width: "1.5rem",
-                              height: "1.5rem",
-                              outline: "none",
-                              boxShadow:
-                                variant.color === lastSelectedColor
-                                  ? "0 0 0 2px gray"
-                                  : "none",
-                            }}
-                            onClick={() => handleButtonClick(variant.color)}
-                          ></button>
-                        )
-                    )
-                  )}
-                </div>
-                <div className="flex ml-6 items-center">
-                  <span className="mr-3">Size</span>
-                  <div className="relative">
-                    <select className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
-                      {filteredData.map((item: ProductData) =>
-                        item.variants
-                          .filter(
-                            (variant: VariantData) =>
-                              variant.color === lastSelectedColor // Filter the sizes based on the selected color
-                          )
-                          .map((variant: VariantData) => (
-                            <option key={variant._id}>{variant.size}</option>
-                          ))
+              <div className="flex ml-6 items-center">
+                <span className="mr-3">Size</span>
+                <div className="relative">
+                  <select
+                    className="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10"
+                    value={selectedSize || ""}
+                    onChange={(e) => setSelectedSize(e.target.value)}
+                  >
+                    <option value="">Select Size</option>
+                    {productData.colorVariants
+                      .filter(
+                        (colorVariant) => colorVariant.color === selectedColor
+                      )
+                      .map((colorVariant) =>
+                        colorVariant.sizes.map((size) => (
+                          <option key={size._id} value={size.size}>
+                            {size.size}
+                          </option>
+                        ))
                       )}
-                    </select>
-                    <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                      <svg
-                        fill="none"
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        className="w-4 h-4"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M6 9l6 6 6-6"></path>
-                      </svg>
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="flex flex-col space-y-2">
-                <span className="title-font font-medium text-2xl text-gray-900 mb-10">
-                  ₹
-                  {filteredData.map(
-                    (item: ProductData) => item.variants[0].price
-                  )}
-                  <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                  </select>
+                  <span className="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                     <svg
-                      fill="currentColor"
+                      fill="none"
+                      stroke="currentColor"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      className="w-5 h-5"
+                      className="w-4 h-4"
                       viewBox="0 0 24 24"
                     >
-                      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
+                      <path d="M6 9l6 6 6-6"></path>
                     </svg>
-                  </button>
-                </span>
-                <button
-                  onClick={addToCartHandler}
-                  className=" text-white bg-neutral-800 border-0 py-2 px-3 focus:outline-none hover:bg-neutral-900 rounded-full"
-                >
-                  Add to Cart
-                </button>
-                <button
-                  onClick={buyNowHandler}
-                  className=" text-white w-full bg-pink-500 border-0 py-2 px-3 focus:outline-none hover:bg-pink-600 rounded-full"
-                >
-                  Buy Now
-                </button>
+                  </span>
+                </div>
               </div>
-              <div className="pincode mt-10 mx-auto w-screen sm:w-auto">
-                <input
-                  onChange={(e) => setPin(e.target.value)}
-                  className="border-black border-[1px] p-1 sm:p-2 rounded-l-full"
-                  type="number"
-                  name="pincode"
-                  id="pincode"
-                />
-                <label htmlFor="pincode">
-                  <button
-                    onClick={checkServiceAvailability}
-                    className="p-1 sm:p-2 rounded-r-full border-black border-[1px] bg-black text-white"
+            </div>
+            <div className="flex flex-col space-y-2">
+              <span className="title-font font-medium text-2xl text-gray-900 mb-10">
+                ₹{productData.colorVariants[0]?.sizes[0]?.price}
+                <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
+                  <svg
+                    fill="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
                   >
-                    Check Availablity
-                  </button>
-                </label>
-                {(!service && service !== null && (
-                  <p className="text-red-500 p-2 text-sm">
-                    Sorry ! We do not deliver to this pincode
+                    <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                  </svg>
+                </button>
+              </span>
+              <button
+                onClick={handleAddToCart}
+                className=" text-white bg-neutral-800 border-0 py-2 px-3 focus:outline-none hover:bg-neutral-900 rounded-full"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className=" text-white w-full bg-pink-500 border-0 py-2 px-3 focus:outline-none hover:bg-pink-600 rounded-full"
+              >
+                Buy Now
+              </button>
+            </div>
+            <div className="pincode mt-10 mx-auto w-screen sm:w-auto">
+              <input
+                onChange={(e) => setPin(e.target.value)}
+                className="border-black border-[1px] p-1 sm:p-2 rounded-l-full"
+                type="number"
+                name="pincode"
+                id="pincode"
+              />
+              <label htmlFor="pincode">
+                <button
+                  onClick={handleCheckServiceAvailability}
+                  className="p-1 sm:p-2 rounded-r-full border-black border-[1px] bg-black text-white"
+                >
+                  Check Availability
+                </button>
+              </label>
+              {(!service && service !== null && (
+                <p className="text-red-500 p-2 text-sm">
+                  Sorry! We do not deliver to this pincode.
+                </p>
+              )) ||
+                (service && (
+                  <p className="text-green-600 p-2 text-sm">
+                    Yay! Pincode eligible for delivery.
                   </p>
-                )) ||
-                  (service && (
-                    <p className="text-green-600 p-2  text-sm">
-                      Yay ! Pincode eligible for delivery
-                    </p>
-                  ))}
-              </div>
+                ))}
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 };
 
-export default Page;
+export default ProductPage;

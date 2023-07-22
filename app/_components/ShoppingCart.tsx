@@ -3,7 +3,6 @@ import { useContext } from "react";
 import CartItem from "./CartItem";
 import CartContext, { CartContextProps } from "@/app/_context/CartContext";
 import { useRouter } from "next/navigation";
-import { BiShoppingBag } from "react-icons/bi";
 
 type ShoppingCartProps = {
   display: boolean;

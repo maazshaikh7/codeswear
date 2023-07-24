@@ -7,6 +7,7 @@ type CartItem = {
   name: string;
   size: string;
   variant: string;
+  image: string;
 };
 
 type Cart = {
@@ -21,11 +22,10 @@ export type CartContextProps = {
     price: number,
     name: string,
     size: string,
-    variant: string
+    variant: string,
+    image: string // Include the image property in the function signature
   ) => void;
-
   removeFromCart: (itemCode: string, qty: number) => void;
-
   clearCart: () => void;
   subTotal: number;
 };
@@ -47,8 +47,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, []);
 
-  // Calculate subtotal whenever cart changes
-
   useEffect(() => {
     const calculateSubTotal = () => {
       let total = 0;
@@ -66,19 +64,18 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     price: number,
     name: string,
     size: string,
-    variant: string
+    variant: string,
+    image: string
   ) => {
     let newCart = { ...cart };
 
     if (itemCode in cart) {
       newCart[itemCode].qty = cart[itemCode].qty + qty;
     } else {
-      newCart[itemCode] = { qty: 1, price, name, size, variant };
+      newCart[itemCode] = { qty: 1, price, name, size, variant, image };
     }
 
     setCart(newCart);
-    console.log("ran");
-
     localStorage.setItem("cart", JSON.stringify(newCart));
   };
 

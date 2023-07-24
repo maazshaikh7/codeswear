@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useContext, useEffect, useState } from "react";
-//TODO auto select color according to slug
 
 import { useRouter } from "next/navigation";
 import CartContext, { CartContextProps } from "@/app/_context/CartContext";
@@ -16,8 +15,16 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
   const [productData, setProductData] = useState<ProductData | null>(null);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [hasSelectedColorAndSize, setHasSelectedColorAndSize] = useState(false);
+  const [attemptedAddToCart, setAttemptedAddToCart] = useState(false);
+
+  useEffect(() => {
+    // Check if the user has made both color and size selections
+    setHasSelectedColorAndSize(!!selectedColor && !!selectedSize);
+  }, [selectedColor, selectedSize]);
 
   const handleAddToCart = () => {
+    setAttemptedAddToCart(true);
     if (productData && selectedColor && selectedSize) {
       const variant = productData.colorVariants.find(
         (v: ColorVariantData) =>
@@ -33,9 +40,10 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
             productData._id,
             1,
             selectedSizeData.price,
-            productData.category,
+            productData.title,
             selectedSizeData.size,
-            variant.color
+            variant.color,
+            productData.img ?? ""
           );
         }
       }
@@ -43,8 +51,11 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
   };
 
   const handleBuyNow = () => {
+    setAttemptedAddToCart(true);
     handleAddToCart();
-    router.push("/checkout");
+    if (productData && selectedColor && selectedSize) {
+      router.push("/checkout");
+    }
   };
 
   const handleCheckServiceAvailability = async () => {
@@ -82,7 +93,6 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
     // Show loading or error message if the product data is not yet fetched
     return <div>Hello</div>;
   }
-  console.log(productData);
 
   return (
     <section className="text-gray-600 body-font overflow-hidden">
@@ -121,25 +131,27 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
               <div className="flex">
                 <span className="mr-3">Color</span>
                 {productData.colorVariants.map(
-                  (colorVariant: ColorVariantData) => (
-                    <button
-                      key={colorVariant.color}
-                      style={{
-                        backgroundColor: colorVariant.color,
-                        border: "2px solid #D1D5DB",
-                        marginLeft: "0.25rem",
-                        borderRadius: "9999px",
-                        width: "1.5rem",
-                        height: "1.5rem",
-                        outline: "none",
-                        boxShadow:
-                          selectedColor === colorVariant.color
-                            ? "0 0 0 2px gray"
-                            : "none",
-                      }}
-                      onClick={() => setSelectedColor(colorVariant.color)}
-                    ></button>
-                  )
+                  (colorVariant: ColorVariantData) => {
+                    return (
+                      <button
+                        key={colorVariant.color}
+                        style={{
+                          backgroundColor: colorVariant.color,
+                          border: "2px solid #D1D5DB",
+                          marginLeft: "0.25rem",
+                          borderRadius: "9999px",
+                          width: "1.5rem",
+                          height: "1.5rem",
+                          outline: "none",
+                          boxShadow:
+                            selectedColor === colorVariant.color
+                              ? "0 0 0 2px gray"
+                              : "none",
+                        }}
+                        onClick={() => setSelectedColor(colorVariant.color)}
+                      ></button>
+                    );
+                  }
                 )}
               </div>
               <div className="flex ml-6 items-center">
@@ -207,6 +219,11 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
               >
                 Buy Now
               </button>
+              {attemptedAddToCart && !hasSelectedColorAndSize && (
+                <p className="text-red-500 p-2 text-sm">
+                  Please select a color and size before proceeding.
+                </p>
+              )}
             </div>
             <div className="pincode mt-10 mx-auto w-screen sm:w-auto">
               <input

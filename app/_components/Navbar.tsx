@@ -20,6 +20,8 @@ const Navbar = () => {
   useEffect(() => {
     if (Object.keys(cart).length === 0) {
       setIsCartDisplayed(false);
+    } else {
+      setIsCartDisplayed(true);
     }
   }, [cart]);
 

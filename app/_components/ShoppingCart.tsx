@@ -38,9 +38,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
       </h2>
       <hr className="bg-black h-1" />
       <ol className="font-semibold my-8">
-        {Object.keys(cart).map(() => {
-          return <CartItem key={987} checkoutPage={checkoutPage} />;
-        })}
+        {Object.keys(cart).map((itemCode) => (
+          <CartItem
+            key={itemCode}
+            itemCode={itemCode}
+            checkoutPage={checkoutPage}
+          />
+        ))}
       </ol>
       {Object.keys(cart).length == 0 && <p>No items in your cart!</p>}
       <div className="text-center">

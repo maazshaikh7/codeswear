@@ -30,7 +30,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
       className={`${display ? "translate-x-0" : "translate-x-full"} ${
         checkoutPage
           ? "pt-24 px-2 md:mx-10"
-          : "min-h-screen absolute top-0 duration-300 right-0 bg-pink-50 px-8 py-8 lg:w-[30%] w-3/4 sm:w-1/2 "
+          : "h-screen overflow-y-scroll absolute top-0 duration-300 right-0 bg-pink-50 px-8 py-8 lg:w-[30%] w-3/4 sm:w-1/2 "
       }`}
     >
       <h2 className="font-bold text-2xl pb-6 ">

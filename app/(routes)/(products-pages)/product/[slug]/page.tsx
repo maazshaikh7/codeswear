@@ -37,7 +37,7 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
         );
         if (selectedSizeData) {
           addToCart(
-            productData._id,
+            selectedSizeData._id,
             1,
             selectedSizeData.price,
             productData.title,

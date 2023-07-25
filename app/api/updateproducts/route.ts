@@ -6,17 +6,8 @@ export async function PUT(req: Request) {
   try {
     await connectDb();
     const data = await req.json();
-    const {
-      title,
-      _id,
-      description,
-      slug,
-      quantity,
-      price,
-      category,
-      img,
-      variants,
-    } = data;
+    const { title, _id, description, slug, category, img, colorVariants } =
+      data;
 
     const saveData = await Product.findByIdAndUpdate(
       { _id },
@@ -24,11 +15,9 @@ export async function PUT(req: Request) {
         title: title,
         description: description,
         slug: slug,
-        price: price,
-        quantity: quantity,
         category: category,
         img: img,
-        variants: variants,
+        colorVariants: colorVariants,
       }
     );
 

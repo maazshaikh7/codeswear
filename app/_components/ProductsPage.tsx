@@ -1,5 +1,6 @@
 "use client";
 // ProductsPage.tsx
+//TODO : Display different colors of same product as different cards
 import React, { useEffect, useState } from "react";
 import MerchProducts, {
   ColorVariantData,
@@ -52,6 +53,10 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
               title={item.title}
               category={item.category}
               colorVariants={item.colorVariants}
+              image={
+                item.img ??
+                "https://cdn1.vectorstock.com/i/1000x1000/60/10/grayscale-silhouette-with-male-t-shirt-vector-13486010.jpg"
+              }
             />
           ))}
         </div>

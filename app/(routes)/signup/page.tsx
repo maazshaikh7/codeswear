@@ -1,10 +1,80 @@
 /* eslint-disable @next/next/no-img-element */
+"use client";
+
+import React, { useState, FormEvent } from "react";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    name: "",
+  });
+  const [error, setError] = useState({ email: "", password: "", name: "" });
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setLoading(true);
+    setError({ email: "", password: "", name: "" });
+
+    if (!formData.email) {
+      setError({ ...error, email: "Email Field is Required" });
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.password) {
+      setError({ ...error, password: "Password Field is required" });
+      setLoading(false);
+      return;
+    }
+
+    if (!formData.name) {
+      setError({ ...error, name: "Name Field is required" });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Send the form data to the server using fetch or axios
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setSuccessMessage(data.message);
+        setErrorMessage("");
+        if (data.success) {
+          setTimeout(() => {
+            router.push("/");
+          }, 1000);
+        }
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.message);
+        setSuccessMessage("");
+      }
+    } catch (error) {
+      console.error("Error submitting form: ", error);
+      setErrorMessage("Something Went Wrong Please Retry Later !");
+      setSuccessMessage("");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex h-screen flex-col justify-center px-6 py-12 pt-24  lg:px-8">
+    <div className="flex h-screen flex-col justify-center px-6 py-12 pt-24 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <img
           className="mx-auto h-10 w-auto"
@@ -17,7 +87,46 @@ const SignUp = () => {
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" action="#" method="POST">
+        {successMessage && (
+          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-600">
+            {successMessage}
+          </p>
+        )}
+        {errorMessage && (
+          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-600">
+            {errorMessage}
+          </p>
+        )}
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+          action="#"
+          method="POST"
+        >
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium leading-6 text-gray-900"
+            >
+              Name
+            </label>
+            <div className="mt-2">
+              <input
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
+              />
+              {error.name && (
+                <p className="text-sm text-red-500">{error.name}</p>
+              )}
+            </div>
+          </div>
           <div>
             <label
               htmlFor="email"
@@ -27,6 +136,9 @@ const SignUp = () => {
             </label>
             <div className="mt-2">
               <input
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 id="email"
                 name="email"
                 type="email"
@@ -34,6 +146,9 @@ const SignUp = () => {
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
+              {error.email && (
+                <p className="text-sm text-red-500">{error.email}</p>
+              )}
             </div>
           </div>
 
@@ -48,6 +163,9 @@ const SignUp = () => {
             </div>
             <div className="mt-2">
               <input
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 id="password"
                 name="password"
                 type="password"
@@ -55,6 +173,9 @@ const SignUp = () => {
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-pink-600 sm:text-sm sm:leading-6"
               />
+              {error.password && (
+                <p className="text-sm text-red-500">{error.name}</p>
+              )}
             </div>
           </div>
           <div className="text-sm">

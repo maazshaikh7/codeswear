@@ -96,7 +96,7 @@ const Navbar = () => {
 
       {/* Check if the user is logged in and display the appropriate content */}
       {userName ? (
-        <div className="relative right-14 top-1">
+        <div className="relative md:right-14 top-1">
           <MdAccountCircle
             className="text-3xl text-pink-600 cursor-pointer"
             onClick={toggleDropdown}

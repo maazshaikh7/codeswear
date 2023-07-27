@@ -55,9 +55,7 @@ const SignUp = () => {
         setSuccessMessage(data.message);
         setErrorMessage("");
         if (data.success) {
-          setTimeout(() => {
-            router.push("/");
-          }, 1000);
+          router.push("/login");
         }
       } else {
         const errorData = await response.json();

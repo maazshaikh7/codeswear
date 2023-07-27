@@ -1,9 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useContext, useEffect } from "react";
-import { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiArrowBack, BiCart, BiMenuAltLeft, BiX } from "react-icons/bi";
+import { MdAccountCircle } from "react-icons/md";
 import ShoppingCart from "./ShoppingCart";
 import { usePathname, useRouter } from "next/navigation";
 import CartContext, { CartContextProps } from "../_context/CartContext";
@@ -13,21 +13,56 @@ const Navbar = () => {
   const pathname = usePathname();
   const { cart } = useContext(CartContext) as CartContextProps;
   const [hidden, setHidden] = useState(false);
+  const [isCartDisplayed, setIsCartDisplayed] = useState(false);
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [userName, setUserName] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  useEffect(() => {
+    // If token is set, navigate to the homepage ("/")
+    if (token) {
+      router.replace("/");
+    }
+  }, [token, router]);
+
   const ToggleClass = () => {
     setHidden(!hidden);
   };
-  const [isCartDisplayed, setIsCartDisplayed] = useState(false);
+  const toggleDropdown = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  // Function to handle logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setToken(null);
+    setUserName("");
+    router.push("/");
+  };
+
   useEffect(() => {
+    // Get the token and user's name from local storage on component mount
+    const storedToken = localStorage.getItem("token");
+    const storedUserName = localStorage.getItem("user");
+
+    if (storedToken && storedUserName) {
+      setToken(storedToken);
+      const names = JSON.parse(storedUserName).name.split(" ");
+      if (names.length > 0) {
+        setUserName(names[0].charAt(0).toUpperCase() + names[0].slice(1));
+      }
+    }
+
     if (Object.keys(cart).length === 0) {
       setIsCartDisplayed(false);
-    } else {
-      setIsCartDisplayed(true);
     }
   }, [cart]);
 
   const ToggleCart = () => {
     setIsCartDisplayed(!isCartDisplayed);
   };
+
   return (
     <nav className="flex flex-col fixed w-full md:flex-row justify-between bg-white z-10 shadow-md items-center p-1.5">
       <div className="logo">
@@ -41,7 +76,7 @@ const Navbar = () => {
         </Link>
       </div>
       <ul
-        className={` flex flex-col md:flex-row ${
+        className={`flex flex-col md:flex-row ${
           hidden ? "hidden md:flex" : ""
         } text-center p-3 md:space-x-6 font-semibold`}
       >
@@ -58,15 +93,38 @@ const Navbar = () => {
           <li className="hover:text-pink-600">Mugs</li>
         </Link>
       </ul>
-      <div className={`md:w-32 ${hidden ? "hidden md:block" : ""}`}>
-        <button
-          onClick={() => router.push("/signup")}
-          className="bg-pink-600 text-white px-3 rounded-full "
-        >
-          Sign up
-        </button>
-      </div>
 
+      {/* Check if the user is logged in and display the appropriate content */}
+      {userName ? (
+        <div className="relative right-14 top-1">
+          <MdAccountCircle
+            className="text-3xl text-pink-600 cursor-pointer"
+            onClick={toggleDropdown}
+          />
+          {showDropdown && (
+            <div className="absolute top-12 right-0 bg-white border border-gray-200 rounded-md shadow-md">
+              <button
+                onClick={handleLogout}
+                className="block px-4 py-2 w-full text-left hover:bg-gray-100 focus:outline-none"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+          <p className="text-xs text-center font-semibold text-gray-700">
+            {userName}
+          </p>
+        </div>
+      ) : (
+        <div className={`md:w-32 ${hidden ? "hidden md:block" : ""}`}>
+          <button
+            onClick={() => router.push("/signup")}
+            className="bg-pink-600 text-white px-3 rounded-full "
+          >
+            Sign up
+          </button>
+        </div>
+      )}
       {(pathname === "/checkout" && (
         <button
           className="absolute top-4 right-4  text-3xl "

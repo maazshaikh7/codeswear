@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import CartContext, { CartContextProps } from "@/app/_context/CartContext";
 import { ColorVariantData } from "@/app/_components/MerchProducts";
 import { ProductData } from "@/app/_components/ProductsPage";
+import Loading from "@/app/loading";
 
 const ProductPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
@@ -75,7 +76,7 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
 
   useEffect(() => {
     // Fetch products data from the API
-    fetch("http://localhost:3000/api/getproducts")
+    fetch("/api/getproducts")
       .then((response) => response.json())
       .then((data) => {
         // Find the product data with the matching slug
@@ -91,7 +92,7 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
 
   if (!productData) {
     // Show loading or error message if the product data is not yet fetched
-    return <div>Hello</div>;
+    return <Loading />;
   }
 
   return (

@@ -88,7 +88,7 @@ const SignUp = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         {successMessage && (
-          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-600">
+          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-200">
             {successMessage}
           </p>
         )}

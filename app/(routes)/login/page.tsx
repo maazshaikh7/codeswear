@@ -49,9 +49,8 @@ const Login = () => {
           // Store the token and user data in local storage or cookies
           localStorage.setItem("token", data.finalData.token);
           localStorage.setItem("user", JSON.stringify(data.finalData.user));
-          setTimeout(() => {
-            router.push("/");
-          }, 1000); // Redirect to home page after 1 second
+          window.location.reload();
+          router.push("/");
         }
       } else {
         const errorData = await response.json();
@@ -82,7 +81,7 @@ const Login = () => {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         {successMessage && (
-          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-600">
+          <p className="text-neutral-700 bg-pink-100 text-center my-4 p-2 border-2 rounded-md border-pink-200">
             {successMessage}
           </p>
         )}

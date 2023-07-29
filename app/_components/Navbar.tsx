@@ -17,9 +17,9 @@ const Navbar = () => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [userName, setUserName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [loggedOutToast, setLoggedOutToast] = useState(false);
 
   useEffect(() => {
-    // If token is set, navigate to the homepage ("/")
     if (token) {
       router.replace("/");
     }
@@ -32,11 +32,14 @@ const Navbar = () => {
     setShowDropdown(!showDropdown);
   };
 
-  // Function to handle logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setToken(null);
+    setLoggedOutToast(true);
+    setTimeout(() => {
+      setLoggedOutToast(false);
+    }, 3000);
     setUserName("");
     router.push("/");
   };
@@ -102,7 +105,14 @@ const Navbar = () => {
             onClick={toggleDropdown}
           />
           {showDropdown && (
-            <div className="absolute top-12 right-0 bg-white border border-gray-200 rounded-md shadow-md">
+            <div className="absolute flex justify-center flex-col top-12 right-0 bg-white border shadow-lg border-gray-200 rounded-md">
+              <Link href="/account" className="text-center p-1 hover:underline">
+                Account
+              </Link>
+              <Link href="/orders" className="text-center p-1 hover:underline">
+                Orders
+              </Link>
+              <hr />
               <button
                 onClick={handleLogout}
                 className="block px-4 py-2 w-full text-left hover:bg-gray-100 focus:outline-none"
@@ -159,6 +169,13 @@ const Navbar = () => {
       >
         <BiX />
       </button>
+      {loggedOutToast && (
+        <div className="absolute top-20 flex justify-center w-screen">
+          <p className=" px-4 py-2 bg-pink-300 font-medium rounded-md animate-smooth-bounce">
+            Logged out successfully!
+          </p>
+        </div>
+      )}
     </nav>
   );
 };

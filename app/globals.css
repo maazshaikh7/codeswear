@@ -6,4 +6,38 @@ button {
 button:disabled {
   @apply text-gray-500 bg-pink-200 cursor-not-allowed;
 }
+@keyframes smooth-bounce {
+  0% {
+    transform: translateY(-100%);
+    animation-timing-function: ease-out;
+  }
+  25% {
+    transform: translateY(50%);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+  70% {
+    transform: translateY(-20%);
+    animation-timing-function: ease-in;
+  }
+  85% {
+    transform: translateY(-5%);
+    animation-timing-function: ease-out;
+  }
+  95% {
+    transform: translateY(-2%);
+    animation-timing-function: ease-in;
+  }
+  100% {
+    transform: translateY(0);
+    animation-timing-function: ease-out;
+  }
+}
+
+.animate-smooth-bounce {
+  animation: smooth-bounce 1.5s;
+}
 @tailwind utilities;

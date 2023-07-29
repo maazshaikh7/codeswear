@@ -76,7 +76,7 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
 
   useEffect(() => {
     // Fetch products data from the API
-    fetch("/api/getproducts")
+    fetch("/api/products/getproducts")
       .then((response) => response.json())
       .then((data) => {
         // Find the product data with the matching slug

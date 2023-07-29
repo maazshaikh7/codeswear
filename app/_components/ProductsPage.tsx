@@ -28,7 +28,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
 
   useEffect(() => {
     // Fetch products data from the API
-    fetch("/api/getproducts")
+    fetch("/api/products/getproducts")
       .then((response) => response.json())
       .then((data) => {
         setMerchandiseData(data);

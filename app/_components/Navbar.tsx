@@ -14,7 +14,9 @@ const Navbar = () => {
   const { cart } = useContext(CartContext) as CartContextProps;
   const [hidden, setHidden] = useState(false);
   const [isCartDisplayed, setIsCartDisplayed] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [token, setToken] = useState(
+    typeof localStorage !== "undefined" ? localStorage.getItem("token") : null
+  );
   const [userName, setUserName] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const [loggedOutToast, setLoggedOutToast] = useState(false);
@@ -46,14 +48,16 @@ const Navbar = () => {
 
   useEffect(() => {
     // Get the token and user's name from local storage on component mount
-    const storedToken = localStorage.getItem("token");
-    const storedUserName = localStorage.getItem("user");
+    if (typeof localStorage !== "undefined") {
+      const storedToken = localStorage.getItem("token");
+      const storedUserName = localStorage.getItem("user");
 
-    if (storedToken && storedUserName) {
-      setToken(storedToken);
-      const names = JSON.parse(storedUserName).name.split(" ");
-      if (names.length > 0) {
-        setUserName(names[0].charAt(0).toUpperCase() + names[0].slice(1));
+      if (storedToken && storedUserName) {
+        setToken(storedToken);
+        const names = JSON.parse(storedUserName).name.split(" ");
+        if (names.length > 0) {
+          setUserName(names[0].charAt(0).toUpperCase() + names[0].slice(1));
+        }
       }
     }
 

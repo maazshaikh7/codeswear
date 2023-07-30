@@ -49,7 +49,7 @@ const Login = () => {
           // Store the token and user data in local storage or cookies
           localStorage.setItem("token", data.finalData.token);
           localStorage.setItem("user", JSON.stringify(data.finalData.user));
-          window.location.reload();
+          router.refresh;
           router.push("/");
         }
       } else {

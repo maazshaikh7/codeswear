@@ -3,10 +3,10 @@ import ShoppingCart from "@/app/_components/ShoppingCart";
 
 const Checkout = () => {
   return (
-    <>
-      <h2 className="font-bold text-2xl pt-24 mx-10 ">Your Details</h2>
-
-      <form className=" p-10 m-12 border-2 rounded-xl border-gray-300 ">
+    <section className="grid gap-8 pt-24 mx-12 mb-10 ">
+      <form className=" order-2 md:order-1 p-10 border-2 col-span-3 md:col-span-1 rounded-xl border-gray-100 ">
+        <h2 className="font-bold text-3xl  ">Your Details</h2>
+        <hr className="bg-black h-0.5 my-4" />
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -199,9 +199,13 @@ const Checkout = () => {
           </button>
         </div>
       </form>
-      <hr className="bg-black h-0.5 mx-10 mt-20 mb-10" />
-      <h2 className="font-bold text-2xl mx-10 ">Payment Method</h2>
-      <form className=" p-10 m-12 border-2 rounded-xl border-gray-300 ">
+      <div className="bg-neutral-200 rounded-xl order-1 py-10 md:order-1 col-span-3 md:col-span-1">
+        <ShoppingCart display={true} checkoutPage={true} />
+      </div>
+      <form className=" p-10 col-span-3 border-2 rounded-xl border-gray-300 order-3">
+        <h2 className="font-bold text-3xl  ">Payment Method</h2>
+        <hr className="bg-black h-0.5 my-4" />
+
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -315,10 +319,7 @@ const Checkout = () => {
           </button>
         </div>
       </form>
-      <div className="mb-24">
-        <ShoppingCart display={true} checkoutPage={true} />
-      </div>
-    </>
+    </section>
   );
 };
 

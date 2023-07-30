@@ -23,9 +23,9 @@ const Navbar = () => {
 
   useEffect(() => {
     if (token) {
-      router.replace("/");
+      router.refresh;
     }
-  }, [token, router]);
+  });
 
   const ToggleClass = () => {
     setHidden(!hidden);
@@ -103,13 +103,13 @@ const Navbar = () => {
 
       {/* Check if the user is logged in and display the appropriate content */}
       {userName ? (
-        <div className="relative md:right-14 top-1">
+        <div className="md:relative absolute right-12 md:right-14 md:top-1 top-3">
           <MdAccountCircle
             className="text-3xl text-pink-600 cursor-pointer"
             onClick={toggleDropdown}
           />
           {showDropdown && (
-            <div className="absolute flex justify-center flex-col top-12 right-0 bg-white border shadow-lg border-gray-200 rounded-md">
+            <div className="absolute flex justify-center flex-col top-12 right-0 bg-white border shadow-lg border-gray-200 rounded-md ">
               <Link href="/account" className="text-center p-1 hover:underline">
                 Account
               </Link>
@@ -125,7 +125,7 @@ const Navbar = () => {
               </button>
             </div>
           )}
-          <p className="text-xs text-center font-semibold text-gray-700">
+          <p className="text-xs hidden md:block text-center font-semibold text-gray-700">
             {userName}
           </p>
         </div>
@@ -178,6 +178,11 @@ const Navbar = () => {
           <p className=" px-4 py-2 bg-pink-300 font-medium rounded-md animate-smooth-bounce">
             Logged out successfully!
           </p>
+        </div>
+      )}
+      {!isCartDisplayed && pathname !== "/checkout" && (
+        <div className="absolute top-2 right-2 text-sm bg-pink-600 rounded-full px-1">
+          {Object.keys(cart).length}
         </div>
       )}
     </nav>

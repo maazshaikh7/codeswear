@@ -1,9 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 const Order = () => {
+  const [orderCompleteToast, setOrderCompleteToast] = useState(false);
+  useEffect(() => {
+    setOrderCompleteToast(true);
+    setTimeout(() => {
+      setOrderCompleteToast(false);
+    }, 4000);
+  }, []);
+
   return (
     <div className="py-28 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
+      {orderCompleteToast && (
+        <div className="absolute top-20 flex justify-center w-screen">
+          <p className=" px-4 py-2 bg-pink-300 font-medium rounded-md animate-smooth-bounce">
+            Yay! Order complete! {"(Demo)"}
+          </p>
+        </div>
+      )}
       <div className="flex justify-start item-start space-y-2 flex-col ">
         <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9  text-gray-800">
           Order #13432

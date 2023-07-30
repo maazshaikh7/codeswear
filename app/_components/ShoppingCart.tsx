@@ -20,6 +20,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
   const handleOnClick = () => {
     if (checkoutPage) {
       router.push("/order");
+      clearCart();
     } else {
       router.push("/checkout");
     }
@@ -29,13 +30,11 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
     <aside
       className={`${display ? "translate-x-0" : "translate-x-full"} ${
         checkoutPage
-          ? "pt-24 px-2 md:mx-10"
+          ? "px-2 md:mx-10"
           : "h-screen overflow-y-scroll absolute top-0 duration-300 right-0 bg-pink-50 px-8 py-8 lg:w-[30%] w-3/4 sm:w-1/2 "
       }`}
     >
-      <h2 className="font-bold text-2xl pb-6 ">
-        {checkoutPage ? "ORDER SUMMARY" : "Your cart"}
-      </h2>
+      <h2 className="font-bold text-2xl pb-6 ">YOUR CART</h2>
       <hr className="bg-black h-1" />
       <ol className="font-semibold my-8">
         {Object.keys(cart).map((itemCode) => (

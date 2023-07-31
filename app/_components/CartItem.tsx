@@ -78,7 +78,7 @@ const CartItem: React.FC<CartItemProps> = ({ itemCode, checkoutPage }) => {
               <BiMinusCircle />
             </button>
             <span>{item.qty || 0}</span>
-            <button onClick={addToCartHandler}>
+            <button onClick={addToCartHandler} disabled={item.qty >= 5}>
               <BiPlusCircle />
             </button>
           </div>

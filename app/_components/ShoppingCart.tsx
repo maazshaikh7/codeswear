@@ -51,7 +51,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         <button
           onClick={handleOnClick}
           disabled={Object.keys(cart).length == 0}
-          className="bg-pink-600 text-white px-3 py-1 m-3 rounded-md"
+          className="bg-pink-600 text-white px-3 py-1 m-3 rounded-md disabled:text-gray-500 disabled:bg-pink-200 disabled:grayscale-0"
         >
           {checkoutPage ? `Place Order` : "Checkout"}
         </button>

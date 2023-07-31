@@ -181,7 +181,7 @@ const Navbar = () => {
         </div>
       )}
       {!isCartDisplayed && pathname !== "/checkout" && (
-        <div className="absolute top-2 right-2 text-sm bg-pink-600 rounded-full px-1">
+        <div className="absolute top-2 right-2 text-white text-sm h-5 w-5 text-center bg-pink-600 rounded-full font-semibold">
           {Object.keys(cart).length}
         </div>
       )}

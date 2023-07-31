@@ -16,7 +16,7 @@ const Order = () => {
       {orderCompleteToast && (
         <div className="absolute top-20 flex justify-center w-screen">
           <p className=" px-4 py-2 bg-pink-300 font-medium rounded-md animate-smooth-bounce">
-            Yay! Order complete! {"(Demo)"}
+            Yay! Order complete! {"(Not really)"}
           </p>
         </div>
       )}

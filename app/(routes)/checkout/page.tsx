@@ -1,7 +1,17 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import ShoppingCart from "@/app/_components/ShoppingCart";
 
 const Checkout = () => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
   return (
     <section className="grid gap-8 pt-24 mx-12 mb-10 ">
       <form className=" order-2 md:order-1 p-10 border-2 col-span-3 md:col-span-1 rounded-xl border-gray-100 ">
@@ -202,101 +212,114 @@ const Checkout = () => {
       <div className="bg-neutral-200 rounded-xl order-1 py-10 md:order-1 col-span-3 md:col-span-1">
         <ShoppingCart display={true} checkoutPage={true} />
       </div>
-      <form className=" p-10 col-span-3 border-2 rounded-xl border-gray-300 order-3">
-        <h2 className="font-bold text-3xl  ">Payment Method</h2>
+      <form
+        className={`p-10 col-span-3 border-2 rounded-xl border-gray-300 order-3 ${
+          isHovered ? "grayscale bg-gray-100" : ""
+        }`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <h2 className="font-bold text-3xl">
+          Payment Method{" "}
+          {isHovered && (
+            <p className="text-sm pt-2">
+              {"(Demo) - Don't enter your details"}
+            </p>
+          )}
+        </h2>
         <hr className="bg-black h-0.5 my-4" />
-
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="first-name"
+                  htmlFor="card-number"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  First name
+                  Card Number
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="first-name"
-                    id="first-name"
-                    autoComplete="given-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6"
+                    name="card-number"
+                    id="card-number"
+                    autoComplete="cc-number"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="last-name"
+                  htmlFor="card-holder"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Last name
+                  Card Holder
                 </label>
                 <div className="mt-2">
                   <input
                     type="text"
-                    name="last-name"
-                    id="last-name"
-                    autoComplete="family-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6"
+                    name="card-holder"
+                    id="card-holder"
+                    autoComplete="cc-holder"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="expiry-date"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Expiry Date
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="expiry-date"
+                    id="expiry-date"
+                    autoComplete="cc-exp"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
+                  />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="cvv"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  CVV
+                </label>
+                <div className="mt-2">
+                  <input
+                    type="text"
+                    name="cvv"
+                    id="cvv"
+                    autoComplete="cc-csc"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 sm:text-sm sm:leading-6"
                   />
                 </div>
               </div>
 
               <div className="sm:col-span-3">
                 <label
-                  htmlFor="email"
+                  htmlFor="payment-method"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Email address
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Phone number
-                </label>
-                <div className="mt-2">
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="phone"
-                    autoComplete="phone"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2  sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-3">
-                <label
-                  htmlFor="country"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Country
+                  Payment Method
                 </label>
                 <div className="mt-2">
                   <select
-                    id="country"
-                    name="country"
-                    autoComplete="country-name"
-                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2  sm:max-w-xs sm:text-sm sm:leading-6"
+                    id="payment-method"
+                    name="payment-method"
+                    autoComplete="payment-method"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 sm:max-w-xs sm:text-sm sm:leading-6"
                   >
-                    <option>India</option>
-                    <option>Canada</option>
-                    <option>United States</option>
+                    <option>Credit Card</option>
+                    <option>Debit Card</option>
+                    <option>PayPal</option>
                   </select>
                 </div>
               </div>

@@ -61,7 +61,7 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
 
   const handleCheckServiceAvailability = async () => {
     try {
-      const pinsResponse = await fetch("http://localhost:3000/api/pincode");
+      const pinsResponse = await fetch("/api/pincode");
       const pinsJson = await pinsResponse.json();
 
       if (pinsJson.includes(pin ? parseInt(pin) : "")) {

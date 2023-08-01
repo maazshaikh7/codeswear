@@ -23,9 +23,9 @@ const Navbar = () => {
 
   useEffect(() => {
     if (token) {
-      router.refresh;
+      router.replace("/");
     }
-  });
+  }, [token, router]);
 
   const ToggleClass = () => {
     setHidden(!hidden);
@@ -105,7 +105,7 @@ const Navbar = () => {
       {userName ? (
         <div className="md:relative absolute right-12 md:right-14 md:top-1 top-3">
           <MdAccountCircle
-            className="text-3xl text-pink-600 cursor-pointer"
+            className="text-3xl text-pink-600 cursor-pointer mx-auto"
             onClick={toggleDropdown}
           />
           {showDropdown && (

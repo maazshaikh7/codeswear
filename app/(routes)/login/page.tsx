@@ -101,7 +101,11 @@ const Login = () => {
               htmlFor="email"
               className="block text-sm font-medium leading-6 text-gray-900"
             >
-              Email address
+              Email address{" "}
+              <span className="text-sm text-gray-400">
+                {" "}
+                - example@gmail.com
+              </span>
             </label>
             <div className="mt-2">
               <input
@@ -128,7 +132,8 @@ const Login = () => {
                 htmlFor="password"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Password
+                Password{" "}
+                <span className="text-sm text-gray-400"> - example123</span>
               </label>
             </div>
             <div className="mt-2">

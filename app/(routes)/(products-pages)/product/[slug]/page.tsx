@@ -19,6 +19,10 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
   const [hasSelectedColorAndSize, setHasSelectedColorAndSize] = useState(false);
   const [attemptedAddToCart, setAttemptedAddToCart] = useState(false);
 
+  const selectedColorVariant = productData?.colorVariants.find(
+    (colorVariant) => colorVariant.color === selectedColor
+  );
+
   useEffect(() => {
     // Check if the user has made both color and size selections
     setHasSelectedColorAndSize(!!selectedColor && !!selectedSize);
@@ -194,7 +198,10 @@ const ProductPage = ({ params }: { params: { slug: string } }) => {
             </div>
             <div className="flex flex-col space-y-2">
               <span className="title-font font-medium text-2xl text-gray-900 mb-10">
-                ₹{productData.colorVariants[0]?.sizes[0]?.price}
+                ₹
+                {selectedColorVariant?.sizes.find(
+                  (size) => size.size === selectedSize
+                )?.price || productData.colorVariants[0]?.sizes[0]?.price}
                 <button className="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg
                     fill="currentColor"

@@ -1,10 +1,12 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { BiSolidDiscount } from "react-icons/bi";
 import { TbHanger, TbTruckDelivery } from "react-icons/tb";
+import ProductsPage from "./ProductsPage";
 
 const Content = () => {
   return (
-    <section>
+    <>
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
@@ -18,6 +20,11 @@ const Content = () => {
               shopping experience powered by server-side rendering.
             </p>
           </div>
+          <ProductsPage category="hoodie" />
+          <hr className="py-8" />
+          <h3 className="text-5xl tracking-tight font-bold p-5 mb-20 text-neutral-800">
+            Why CodesWear <b className="text-pink-600">?</b>
+          </h3>
           <div className="flex flex-wrap -m-4">
             <div className="xl:w-1/3 md:w-1/2 p-4">
               <div className="border border-gray-200 p-6 rounded-lg">
@@ -61,7 +68,7 @@ const Content = () => {
           </div>
         </div>
       </section>
-    </section>
+    </>
   );
 };
 

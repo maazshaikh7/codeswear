@@ -47,7 +47,7 @@ const MerchProducts: React.FC<MerchProductsProps> = ({
         <span className="block relative my-3 h-64 w-56 mx-auto rounded-md overflow-hidden border-y-2 border-gray-100">
           <img
             alt="ecommerce"
-            className="object-cover object-center w-full h-full block"
+            className="object-cover object-center w-full h-full block hover:scale-125 duration-500"
             src={image}
           />
         </span>

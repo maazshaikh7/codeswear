@@ -44,9 +44,12 @@ const AddProduct = () => {
   };
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [isProductAdded, setisProductAdded] = useState(false);
 
   const handleInputChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
@@ -65,7 +68,7 @@ const AddProduct = () => {
   const handleSizeChange = (
     colorIndex: number,
     sizeIndex: number,
-    event: ChangeEvent<HTMLInputElement>
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     const colorVariants: ColorVariant[] = [...formData.colorVariants];
@@ -89,7 +92,11 @@ const AddProduct = () => {
 
       if (data.success) {
         // Handle success message or redirect to a different page
-        console.log("Product added successfully!");
+        setFormData(initialFormData);
+        setisProductAdded(true);
+        setTimeout(() => {
+          setisProductAdded(false);
+        }, 4000);
       } else {
         console.log("Failed to add the product. Please try again!");
       }
@@ -101,6 +108,13 @@ const AddProduct = () => {
 
   return (
     <div className=" bg-pink-50 py-10 px-4">
+      {isProductAdded && (
+        <div className="fixed top-20 right-80 flex justify-center w-screen">
+          <p className=" px-4 py-2 bg-pink-300 font-medium rounded-md animate-smooth-bounce">
+            Product added to database
+          </p>
+        </div>
+      )}
       <div className="max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <h1 className="text-center text-2xl font-bold text-pink-600 py-4">
           Add Product
@@ -155,15 +169,21 @@ const AddProduct = () => {
           <br />
           <label className="block">
             Category:
-            <input
-              type="text"
+            <select
               name="category"
               value={formData.category}
               onChange={handleInputChange}
               required
               className="block w-full mt-2 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-            />
+            >
+              <option value="">Select Category</option>
+              <option value="tshirt">T-Shirt</option>
+              <option value="hoodie">Hoodie</option>
+              <option value="sweatshirt">Sweatshirt</option>
+              <option value="mug">Mug</option>
+            </select>
           </label>
+
           <br />
           {formData.colorVariants.map((colorVariant, colorIndex) => (
             <div key={colorIndex} className="my-4">
@@ -189,8 +209,7 @@ const AddProduct = () => {
                   </h4>
                   <label className="block">
                     Size:
-                    <input
-                      type="text"
+                    <select
                       name="size"
                       value={size.size}
                       onChange={(e) =>
@@ -198,7 +217,13 @@ const AddProduct = () => {
                       }
                       required
                       className="block w-full mt-2 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-pink-500 focus:border-pink-500"
-                    />
+                    >
+                      <option value="">Select Size</option>
+                      <option value="S">S</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
+                    </select>
                   </label>
                   <br />
                   <label className="block">

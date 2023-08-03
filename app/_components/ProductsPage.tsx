@@ -49,15 +49,15 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ category }) => {
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-24 mx-auto">
         <h2 className="text-center text-3xl font-semibold my-10">
-          BEST SELLING {category.toUpperCase()}S ON CODESWEAR
+          EXPLORE TRENDING {category.toUpperCase()}S ON CODESWEAR
         </h2>
-        <hr className="mb-10" />
+        <hr className="mb-10 " />
         {loading ? (
           <Loading />
         ) : (
           <div className="flex flex-wrap -m-4 gap-6 gap-x-10 justify-center">
             {filteredData.length === 0 && (
-              <p>
+              <p className="p-4">
                 Sorry all the {category}s are out of stock. New stock coming
                 soon!
               </p>

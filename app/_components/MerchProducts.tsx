@@ -35,12 +35,12 @@ const MerchProducts: React.FC<MerchProductsProps> = ({
   return (
     <Link href={`/product/${slug}`}>
       {/* Use the first variant's ID for the link */}
-      <div className="p-2 w-full shadow-md">
+      <div className="p-2 w-72 shadow-md">
         <div className="mt-4 text-center">
           <h3 className="text-gray-500 text-xs tracking-widest title-font mb-1">
             {category.toUpperCase()}
           </h3>
-          <h2 className="text-gray-900 title-font text-lg font-medium">
+          <h2 className="text-gray-900 title-font text-lg font-medium line-clamp-1">
             {title}
           </h2>
         </div>

@@ -1,34 +1,83 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+#### App is live and running at 
 
-## Getting Started
+### https://codeswear-ecommerce.vercel.app/
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+ - don't forget to leave a star ! :)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Authors
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Maaz Shaikh](https://www.github.com/maazhsaikh7)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Features
 
-## Learn More
+#### NOTE
+ - Admin Dashboard is accessible to you if you clone it you can't Signup for Admin Account I have added dummy Product and categories 
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### multi User Login System
+- SignIn / SignUp ✔
+- Forget Password ✔
+- JWT validation on each Authorized Request ✔
+- Authorization validation for Admin Access and Customer Access ✔
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+# ADMIN PANEL
+ - Add a product ✔
+ - view Product ✔
+ - Delete a Product ✔
+ - update product ✔
+ - Add a Category ✔
+ - view Category (Data tables) ✔
+ - update Category  ✔
+ - Delete category ✔
+ - search category By name ✔
+ - search product by category Name ✔
+ - Handle Order Delivery  ✔
+ - Pending Order  List ✔
+ - Completed Order List ✔
 
-## Deploy on Vercel
+# Customer
+- View Product & Category ✔
+- view product related to specific category ✔
+- view dynamic pages detail with breadcamp ✔
+- Add product to cart ✔
+- Remove Product from cart ✔
+- Increase Decrease cart Item  Quantity ✔ (IF product Instock Quantity is less then your cart quantity then you are unable to  increase that product Quantity)
+- Alert if InStock Quantity isn't Available ✔
+- Bookmark favourite Product ✔
+- remove product from bookmark ✔
+- Order a Product ✔
+- After Creating an Order Product Exists in Cart for current User will be Cleared ✔
+- track Order Status ✔
+- View Order Detail ✔
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+#### Note 
+More Functionality will be added with time
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+
+## Tech
+- Nextjs 13
+- Typescript
+- tailwind css
+- Context API
+- joi validation
+- mongoDB
+  fetch API 
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`MONGO_URI` = Your mongoDB URL
+
+`JWT_SECREAT` = Your custom JWT_SECREAT key
+
+
+
+
+
+
+
+
+    
